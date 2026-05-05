@@ -7,6 +7,8 @@
     "test:run": "vitest run"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1041.0",
+    "@aws-sdk/lib-dynamodb": "^3.1041.0",
     "@opensea/sdk": "^10.2.0",
     "ethers": "^6.16.0",
     "viem": "^2.48.4",

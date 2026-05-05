@@ -6,7 +6,7 @@ export const NftBaseSchema = z.object({
 export type NftBase = z.infer<typeof NftBaseSchema>;
 
 export const NftMetadataSchema = NftBaseSchema.extend({
-  treasuryDust: z.number().nullable(),
+  treasuryDust: z.number(),
   imageUrl: z.string().nullable(),
   rarity: z
     .union([
@@ -26,14 +26,18 @@ export type NftMetadata = z.infer<typeof NftMetadataSchema>;
  */
 export const NftPriceSchema = NftBaseSchema.extend({
   priceInMon: z.number(),
-  priceInUsd: z.number().nullable(),
+  priceInUsd: z.number(),
 });
 export type NftPrice = z.infer<typeof NftPriceSchema>;
 
 /**
- * NFTプロパティのモデル
+ * 画面表示用のモデル
  */
-export const NftPropertySchema = NftMetadataSchema.extend(
+
+export const NftViewSchema = NftMetadataSchema.extend(
   NftPriceSchema.shape,
-).extend(NftBaseSchema.shape);
-export type NftProperty = z.infer<typeof NftPropertySchema>;
+).extend({
+  dustValue: z.number(),
+  dustUnitPrice: z.number(),
+  diviation: z.number(),
+});
