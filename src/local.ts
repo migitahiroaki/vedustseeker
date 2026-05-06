@@ -1,4 +1,4 @@
-import { lambdaHandler } from "@/seeker";
+import { handler } from "@/seeker";
 import { APIGatewayProxyEventV2 } from "aws-lambda";
 
 export const sampleEvent: APIGatewayProxyEventV2 = {
@@ -36,4 +36,4 @@ export const sampleEvent: APIGatewayProxyEventV2 = {
   isBase64Encoded: false,
 };
 
-lambdaHandler(sampleEvent);
+handler(sampleEvent);

@@ -14,7 +14,7 @@ import { ConditionSchema } from "./types/condition";
 
 const appEnv = new AppEnv();
 
-export const lambdaHandler = async (
+export const handler = async (
   event: APIGatewayProxyEventV2,
 ): Promise<APIGatewayProxyResult> => {
   const condition = ConditionSchema.parse(event.queryStringParameters);
