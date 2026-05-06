@@ -2,11 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "index.ts",
+      "name": "local",
       "type": "node",
       "request": "launch",
       "runtimeArgs": ["--import", "tsx"],
-      "program": "${workspaceFolder}/src/index.ts",
+      "program": "${workspaceFolder}/src/local.ts",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
@@ -15,17 +15,6 @@
       "env": {
         "AWS_PROFILE": ""
       }
-    },
-    {
-      "name": "onchain",
-      "type": "node",
-      "request": "launch",
-      "runtimeArgs": ["--import", "tsx"],
-      "program": "${workspaceFolder}/src/onchain.ts",
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

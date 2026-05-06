@@ -6,11 +6,34 @@ import { Listing } from "@opensea/sdk";
 import { Mapper } from "@/libs/mapper";
 import { DynamoDB } from "@/libs/dynamoDB";
 import { MonadChain } from "@/libs/monadChain";
+import { Condition } from "@/types/condition";
+import { Filter } from "@/libs/filter";
 
-export const fetchNftsWithCache = async (appEnv: AppEnv) => {
+import { APIGatewayProxyEventV2, APIGatewayProxyResult } from "aws-lambda";
+import { ConditionSchema } from "./types/condition";
+
+const appEnv = new AppEnv();
+
+export const lambdaHandler = async (
+  event: APIGatewayProxyEventV2,
+): Promise<APIGatewayProxyResult> => {
+  const condition = ConditionSchema.parse(event.queryStringParameters);
+
+  const nfts = await fetchNftsWithCache(appEnv, condition);
+  const body = JSON.stringify(nfts);
+  console.info(body);
+
+  return {
+    statusCode: 200,
+    body,
+  };
+};
+
+const fetchNftsWithCache = async (appEnv: AppEnv, condition: Condition) => {
   const dynamoDb = new DynamoDB(appEnv);
   const openSea = new OpenSea(appEnv);
   const monadChain = new MonadChain();
+  const filter = new Filter(condition);
 
   // リスト一覧、MONのUSD価格を並行して取得
   const [listings, monPriceInUsd, dustPriceInUsd]: [Listing[], number, number] =
@@ -53,7 +76,7 @@ export const fetchNftsWithCache = async (appEnv: AppEnv) => {
     monPriceInUsd,
     dustPriceInUsd,
   );
-  console.info(JSON.stringify(viewData, null, 2));
+  const filtered = filter.applied(viewData);
 
-  return viewData;
+  return filtered;
 };

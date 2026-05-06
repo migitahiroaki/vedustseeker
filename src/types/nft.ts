@@ -33,7 +33,6 @@ export type NftPrice = z.infer<typeof NftPriceSchema>;
 /**
  * 画面表示用のモデル
  */
-
 export const NftViewSchema = NftMetadataSchema.extend(
   NftPriceSchema.shape,
 ).extend({
@@ -41,3 +40,5 @@ export const NftViewSchema = NftMetadataSchema.extend(
   dustUnitPrice: z.number(),
   diviation: z.number(),
 });
+
+export type NftView = z.infer<typeof NftViewSchema>;

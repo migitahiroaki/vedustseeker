@@ -4,6 +4,7 @@ import {
   NftMetadataSchema,
   NftPrice,
   NftPriceSchema,
+  NftView,
   NftViewSchema,
 } from "@/types/nft";
 import { GetNFTMetadataResponse, Listing } from "@opensea/sdk";
@@ -105,7 +106,7 @@ export class Mapper {
     priceData: Record<string, NftPrice>,
     monPriceInUsd: number,
     dustPriceInUsd: number,
-  ) {
+  ): Record<string, NftView> {
     const ids = Object.keys(metaData);
 
     const entries = ids.map((id) => {
