@@ -18,6 +18,7 @@ export const handler = async (
   event: APIGatewayProxyEventV2,
 ): Promise<APIGatewayProxyResult> => {
   const condition = ConditionSchema.parse(event.queryStringParameters);
+  console.debug("フィルタ条件", condition);
 
   const nfts = await fetchNftsWithCache(appEnv, condition);
   const body = JSON.stringify(nfts);
@@ -57,6 +58,7 @@ const fetchNftsWithCache = async (appEnv: AppEnv, condition: Condition) => {
     .slice(0, appEnv.parallelFetchLimit);
   // OpenSeaにないidは削除済みなので、DBからも削除
   const outdatedIds = existingIds.filter((id) => !ids.includes(id));
+  console.debug("古くなったIDs", outdatedIds);
 
   // 新規分のデータ取得
   const [gnmr, lockedData] = await Promise.all([
@@ -64,6 +66,8 @@ const fetchNftsWithCache = async (appEnv: AppEnv, condition: Condition) => {
     monadChain.fetchVeDustLockByIds(newIds.map(Number)),
   ]);
   const newMetaData = Mapper.toNftMetadata(gnmr, lockedData);
+  console.debug("新規データ", newMetaData);
+
   // 新規分をDB保存し、なくなったIDを削除
   await Promise.all([
     dynamoDb.putItems(Object.values(newMetaData)),
@@ -76,7 +80,8 @@ const fetchNftsWithCache = async (appEnv: AppEnv, condition: Condition) => {
     monPriceInUsd,
     dustPriceInUsd,
   );
-  const filtered = filter.applied(viewData);
+  console.debug("フィルタ前のViewデータ", viewData);
 
+  const filtered = filter.applied(viewData);
   return filtered;
 };

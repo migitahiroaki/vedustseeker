@@ -67,6 +67,7 @@ export class DynamoDB {
    * @returns 保存したアイテム
    */
   public async putItems(items: NftMetadata[]): Promise<void> {
+    console.debug("保存対象アイテム", items);
     if (items.length == 0) return;
     const res = await this.client.send(
       new BatchWriteCommand({
