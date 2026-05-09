@@ -18,6 +18,11 @@ export class DynamoDB {
       new DynamoDBClient({
         region: appEnv.dynamodbRegion,
         endpoint: appEnv.dynamodbEndpoint,
+        requestHandler: {
+          requestTimeout: 1000,
+          connectionTimeout: 500,
+          socketTimeout: 500,
+        },
       }),
     );
   }
