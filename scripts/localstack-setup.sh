@@ -34,7 +34,7 @@ done
 # テーブルが既に存在するか確認
 if aws dynamodb describe-table \
   --table-name "$DYNAMODB_TABLE_NAME" \
-  --endpoint-url "$AWS_ENDPOINT_URL_DYNAMODB" \
+  --endpoint-url "$DYNAMODB_ENDPOINT" \
   --region "$AWS_REGION" \
   ; then
   echo "Table '$DYNAMODB_TABLE_NAME' already exists."
@@ -45,7 +45,7 @@ else
     --attribute-definitions AttributeName=id,AttributeType=S \
     --key-schema AttributeName=id,KeyType=HASH \
     --billing-mode PAY_PER_REQUEST \
-    --endpoint-url "$AWS_ENDPOINT_URL_DYNAMODB" \
+    --endpoint-url "$DYNAMODB_ENDPOINT" \
     --region "$AWS_REGION"
   echo "Table created successfully."
 fi

@@ -1,10 +1,11 @@
-import { createPublicClient, http, PublicClient } from "viem";
+import { createPublicClient, fallback, http, PublicClient } from "viem";
 import { mainnet } from "viem/chains";
 import vedustAbi from "@/abi/vedust";
 import { LockedData } from "@/types/contract";
 
 const VE_DUST_ADDRESS = "0xBB4738D05AD1b3Da57a4881baE62Ce9bb1eEeD6C";
-const MONAD_RPC_URI = "https://rpc.monad.xyz";
+const ARCHEMY_RPC_URL = "https://rpc1.monad.xyz/";
+const DRPC_RPC_URL = "https://monad-mainnet.drpc.org/";
 
 export class MonadChain {
   private client: PublicClient;
@@ -12,7 +13,14 @@ export class MonadChain {
   constructor() {
     this.client = createPublicClient({
       chain: mainnet,
-      transport: http(MONAD_RPC_URI),
+      transport: fallback([
+        http(ARCHEMY_RPC_URL, {
+          timeout: 1000,
+        }),
+        http(DRPC_RPC_URL, {
+          timeout: 1000,
+        }),
+      ]),
     });
   }
 
