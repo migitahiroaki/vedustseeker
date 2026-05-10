@@ -17,7 +17,7 @@ const appEnv = new AppEnv();
 export const handler = async (
   event: APIGatewayProxyEventV2,
 ): Promise<APIGatewayProxyResult> => {
-  const condition = ConditionSchema.parse(event.queryStringParameters);
+  const condition = ConditionSchema.parse(event.queryStringParameters || {});
   console.debug("フィルタ条件", condition);
 
   const nfts = await fetchNftsWithCache(appEnv, condition);
@@ -80,8 +80,8 @@ const fetchNftsWithCache = async (appEnv: AppEnv, condition: Condition) => {
     monPriceInUsd,
     dustPriceInUsd,
   );
-  console.debug("フィルタ前のViewデータ", viewData);
 
   const filtered = filter.applied(viewData);
+  console.debug("フィルタ後のViewデータ", filtered);
   return filtered;
 };
