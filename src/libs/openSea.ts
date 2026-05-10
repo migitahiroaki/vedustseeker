@@ -61,7 +61,7 @@ export class OpenSea {
     acc: Listing[] = [],
     cursor?: string,
   ): Promise<Listing[]> {
-    const glr = await this.sdk.api.getAllListings(
+    const glr = await this.sdk.api.getBestListings(
       COLLECTION_SLUG,
       200,
       cursor,
