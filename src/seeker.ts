@@ -35,13 +35,14 @@ const fetchNftsWithCache = async (appEnv: AppEnv, condition: Condition) => {
   const openSea = new OpenSea(appEnv);
   const monadChain = new MonadChain();
   const filter = new Filter(condition);
+  const coingecko = new Coingecko(appEnv);
 
   // リスト一覧、MONのUSD価格を並行して取得
   const [listings, monPriceInUsd, dustPriceInUsd]: [Listing[], number, number] =
     await Promise.all([
       openSea.fetchAllListing(),
-      Coingecko.getMonPriceInUsd(),
-      Coingecko.getDustPriceInUsd(),
+      coingecko.getMonPriceInUsd(),
+      coingecko.getDustPriceInUsd(),
     ]);
 
   const nftPrices: Record<string, NftPrice> = Mapper.toNftPrice(

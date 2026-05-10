@@ -21,6 +21,11 @@ export class AppEnv {
    */
   public readonly dynamodbEndpoint?: string;
 
+  /**
+   * coingeckoのAPIキー
+   */
+  public readonly coingeckoQuery: string;
+
   constructor() {
     const openSeaApiKey = process.env.OPENSEA_API_KEY;
 
@@ -34,6 +39,12 @@ export class AppEnv {
     this.parallelFetchLimit = Number.parseInt(
       process.env.PARALLEL_FETCH_LIMIT || "10",
     );
+
+    const coingeckoApiKey = process.env.COINGECKO_API_KEY;
+
+    this.coingeckoQuery = coingeckoApiKey
+      ? `&x_cg_demo_api_key=${coingeckoApiKey}`
+      : "";
 
     const dynamodbTableName = process.env.DYNAMODB_TABLE_NAME;
     if (!dynamodbTableName) {
