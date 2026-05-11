@@ -16,6 +16,7 @@ const NFT_CONTRACT_ADDRESS = "0xbb4738d05ad1b3da57a4881bae62ce9bb1eeed6c";
 
 export class OpenSea {
   private sdk: OpenSeaSDK;
+  private parallelFetchLimit: number;
 
   constructor(appEnv: AppEnv) {
     const publicClient = createPublicClient({
@@ -23,6 +24,7 @@ export class OpenSea {
       transport: http(),
     });
 
+    this.parallelFetchLimit = appEnv.parallelFetchLimit;
     this.sdk = new OpenSeaSDK(
       { publicClient },
       { chain: MONAD_MAINNET, apiKey: appEnv.openSeaApiKey },
@@ -33,7 +35,7 @@ export class OpenSea {
   public async fetchNftsByIds(
     ids: string[],
   ): Promise<Record<string, GetNFTMetadataResponse>> {
-    const limitedIds = ids.slice(0, 10);
+    const limitedIds = ids.slice(0, this.parallelFetchLimit);
 
     const responses = await Promise.all(
       limitedIds.map((id) => this.getNftById(id)),
