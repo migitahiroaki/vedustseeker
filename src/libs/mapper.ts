@@ -37,12 +37,12 @@ export class Mapper {
         formatUnits(BigInt(currentPrice.value), currentPrice.decimals),
       );
       const priceInUsd = priceInMon * monPriceInUsd;
-      const newRecord: NftPrice = {
+      const newRecord = NftPriceSchema.parse({
         id,
         priceInMon,
         priceInUsd,
         updatedAt,
-      };
+      });
       const existingRecord: NftPrice | undefined = acc[id];
       if (!existingRecord || existingRecord.updatedAt < updatedAt) {
         acc[id] = newRecord;
