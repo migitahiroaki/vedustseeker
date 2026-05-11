@@ -14,47 +14,41 @@ const DUST_AMOUNT_DECIMALS_UNIT = 18;
 
 export class Mapper {
   /**
-   * コレクションすべてのリストをパースして、 id -> NftPrice のマップを返す
+   * コレクションすべてのリストをパースして、 id -> NftPrice のマップを返す。
+   * 重複の場合は、最新のエントリのみ残す
+   *
    * @param glr
    * @param monPriceInUsd
    * @returns id -> NftPrice
    */
-  public static toNftPrice = (
+  public static toNormalizedNftPrice = (
     listings: Listing[],
     monPriceInUsd: number,
   ): Record<string, NftPrice> => {
-    // listings が undefined や null の場合、早期リターン
     if (!listings) return {};
-
-    return Object.fromEntries(
-      listings
-        .map((item): [string, NftPrice] | null => {
-          // 深い階層のプロパティを安全に取得
-          const tokenId =
-            item.protocol_data.parameters.offer[0]?.identifierOrCriteria;
-          const currentPrice = item.price?.current;
-
-          // 必要なデータが欠けている場合は null を返して後で除外
-          if (!tokenId || !currentPrice) return null;
-
-          // 文字列の数値を安全に変換
-          const priceInMon = Number(
-            formatUnits(BigInt(currentPrice.value), currentPrice.decimals),
-          );
-          const priceInUsd = priceInMon * monPriceInUsd;
-
-          return [
-            tokenId,
-            NftPriceSchema.parse({
-              id: tokenId,
-              priceInMon,
-              priceInUsd,
-            }),
-          ];
-        })
-        // 型ガードを用いて null を除外し、戻り値の型を確定させる
-        .filter((entry): entry is [string, NftPrice] => entry !== null),
-    );
+    return listings.reduce((acc: Record<string, NftPrice>, item: Listing) => {
+      const id = item.protocol_data.parameters.offer[0]?.identifierOrCriteria;
+      const currentPrice = item.price?.current;
+      if (!id || !currentPrice) {
+        return acc;
+      }
+      const updatedAt = Number(item.protocol_data.parameters.startTime);
+      const priceInMon = Number(
+        formatUnits(BigInt(currentPrice.value), currentPrice.decimals),
+      );
+      const priceInUsd = priceInMon * monPriceInUsd;
+      const newRecord: NftPrice = {
+        id,
+        priceInMon,
+        priceInUsd,
+        updatedAt,
+      };
+      const existingRecord: NftPrice | undefined = acc[id];
+      if (!existingRecord || existingRecord.updatedAt < updatedAt) {
+        acc[id] = newRecord;
+      }
+      return acc;
+    }, {});
   };
 
   /**

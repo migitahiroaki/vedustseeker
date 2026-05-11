@@ -45,7 +45,7 @@ const fetchNftsWithCache = async (appEnv: AppEnv, condition: Condition) => {
       coingecko.getDustPriceInUsd(),
     ]);
 
-  const nftPrices: Record<string, NftPrice> = Mapper.toNftPrice(
+  const nftPrices: Record<string, NftPrice> = Mapper.toNormalizedNftPrice(
     listings,
     monPriceInUsd,
   );
