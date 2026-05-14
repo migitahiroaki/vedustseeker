@@ -21,8 +21,8 @@ export const handler = async (
   console.debug("フィルタ条件", condition);
 
   const nfts = await fetchNftsWithCache(appEnv, condition);
+  console.info(nfts);
   const body = JSON.stringify(nfts);
-  console.info(body);
 
   return {
     statusCode: 200,
