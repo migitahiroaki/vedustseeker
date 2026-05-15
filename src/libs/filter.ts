@@ -10,8 +10,8 @@ export class Filter {
   public applied(data: Record<string, NftView>): Record<string, NftView> {
     const filteredEntries = Object.entries(data).filter(([_id, view]) => {
       // 割引率(LessThan)が設定されている場合、しきい値未満のもののみにフィルタ
-      if (this.condition.diviationLT != void 0) {
-        if (view.diviation > this.condition.diviationLT) {
+      if (this.condition.deviationLT != void 0) {
+        if (view.deviation > this.condition.deviationLT) {
           return false;
         }
       }

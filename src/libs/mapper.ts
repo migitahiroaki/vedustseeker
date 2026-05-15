@@ -111,7 +111,7 @@ export class Mapper {
       // DUST単価を計算
       const dustUnitPrice = priceInUsd / metaData[id].treasuryDust;
       // 割引率を計算
-      const diviation = priceInUsd / dustValue - 1;
+      const deviation = priceInUsd / dustValue - 1;
 
       return [
         id,
@@ -120,7 +120,7 @@ export class Mapper {
           ...priceData[id],
           dustValue,
           dustUnitPrice,
-          diviation,
+          deviation,
         }),
       ];
     });

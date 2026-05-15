@@ -39,7 +39,7 @@ export const NftViewSchema = NftMetadataSchema.extend(
 ).extend({
   dustValue: z.number(),
   dustUnitPrice: z.number(),
-  diviation: z.number(),
+  deviation: z.number(),
 });
 
 export type NftView = z.infer<typeof NftViewSchema>;
