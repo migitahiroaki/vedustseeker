@@ -21,7 +21,7 @@ export const handler = async (
   console.debug("フィルタ条件", condition);
 
   const nfts = await fetchNftsWithCache(appEnv, condition);
-  console.info(nfts);
+  Object.values(nfts).forEach((n) => console.info(n));
   const body = JSON.stringify(nfts);
 
   return {
