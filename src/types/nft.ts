@@ -27,6 +27,7 @@ export type NftMetadata = z.infer<typeof NftMetadataSchema>;
 export const NftPriceSchema = NftBaseSchema.extend({
   priceInMon: z.number(),
   priceInUsd: z.number(),
+  updatedAt: z.number(),
 });
 export type NftPrice = z.infer<typeof NftPriceSchema>;
 
@@ -38,7 +39,7 @@ export const NftViewSchema = NftMetadataSchema.extend(
 ).extend({
   dustValue: z.number(),
   dustUnitPrice: z.number(),
-  diviation: z.number(),
+  deviation: z.number(),
 });
 
 export type NftView = z.infer<typeof NftViewSchema>;

@@ -5,14 +5,14 @@ export const sampleEvent: APIGatewayProxyEventV2 = {
   version: "2.0",
   routeKey: "$default",
   rawPath: "/",
-  rawQueryString: "diviationLT=0&dustUnitPriceLT=0.6",
+  rawQueryString: "deviationLT=0&dustUnitPriceLT=0.6",
   headers: {
     host: "localhost",
   },
   queryStringParameters: {
     id: "123",
     search: "test",
-    diviationLT: "0",
+    deviationLT: "0",
     dustUnitPriceLT: "0.6",
   },
   requestContext: {

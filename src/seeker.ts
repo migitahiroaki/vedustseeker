@@ -21,8 +21,8 @@ export const handler = async (
   console.debug("フィルタ条件", condition);
 
   const nfts = await fetchNftsWithCache(appEnv, condition);
+  Object.values(nfts).forEach((n) => console.info(n));
   const body = JSON.stringify(nfts);
-  console.info(body);
 
   return {
     statusCode: 200,
@@ -45,7 +45,7 @@ const fetchNftsWithCache = async (appEnv: AppEnv, condition: Condition) => {
       coingecko.getDustPriceInUsd(),
     ]);
 
-  const nftPrices: Record<string, NftPrice> = Mapper.toNftPrice(
+  const nftPrices: Record<string, NftPrice> = Mapper.toNormalizedNftPrice(
     listings,
     monPriceInUsd,
   );
